@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   error = FALSE, 
   collapse = TRUE,
-  comment = "",
+  comment = "#>",
   fig.height = 4,
   fig.width = 8,
   fig.align = "center",
@@ -106,6 +106,8 @@ Variable in the data is directly mapped to an element in the plot </font>
 ```{r}
 glimpse(autism)
 ```
+
+`?HLMdiag::autism` for details on the data
 
 ---
 # Plotting points
@@ -272,7 +274,7 @@ grid.arrange(p1, p2, ncol=2)
 
 [41% Of Fliers Think You’re Rude If You Recline Your Seat](http://fivethirtyeight.com/datalab/airplane-etiquette-recline-seat/)
 
-```{r echo=FALSE}
+```{r}
 fly <- read_csv("../data/flying-etiquette.csv")
 glimpse(fly)
 ```
@@ -282,7 +284,7 @@ glimpse(fly)
 
 - Mix of categorical and quantiative variables. 
 - What mappings are appropriate? 
-- Area for counts of categories, 
+- Area for counts of categories.
 - side-by-side boxplots for mixed pair. 
 
 ---
@@ -293,19 +295,38 @@ ggplot(fly, aes(x=`How often do you travel by plane?`)) +
   geom_bar() + coord_flip()
 ```
 
-Categories are not sorted
+**Any issue about the plot itself?**
+
+--
+
+Categories are not sorted.
 
 ---
 # Sorted categories
 
 ```{r}
-fly$`How often do you travel by plane?` <- 
-  factor(fly$`How often do you travel by plane?`, levels=c(
-    "Never","Once a year or less","Once a month or less",
-    "A few times per month","A few times per week","Every day"))
-ggplot(fly, aes(x=`How often do you travel by plane?`)) + geom_bar() + coord_flip()
-ggplot(fly, aes(x=`How often do you travel by plane?`, 
-                fill=`How often do you travel by plane?`)) + geom_bar() + coord_flip() +
+fly <- fly %>% 
+  mutate(`How often do you travel by plane?` = 
+    fct_relevel(`How often do you travel by plane?`,
+      "Never","Once a year or less","Once a month or less",
+      "A few times per month","A few times per week","Every day"
+    )
+  )
+ggplot(fly, aes(x=`How often do you travel by plane?`)) + 
+  geom_bar() + 
+  coord_flip()
+```
+
+---
+# Sorted categories
+
+```{r}
+ggplot(fly, 
+  aes(x=`How often do you travel by plane?`, 
+    fill=`How often do you travel by plane?`)
+  ) + 
+  geom_bar() + 
+  coord_flip() +
   scale_fill_brewer(palette="Dark2")
 ```
 
@@ -313,21 +334,28 @@ ggplot(fly, aes(x=`How often do you travel by plane?`,
 # Filter data
 
 ```{r}
-fly_sub <- fly %>% filter(`How often do you travel by plane?` %in% 
-                            c("Once a year or less","Once a month or less")) %>%
-  filter(!is.na(`Do you ever recline your seat when you fly?`)) %>%
-  filter(!is.na(Age)) %>% filter(!is.na(Gender))
+fly_sub <- fly %>% 
+  filter(
+    `How often do you travel by plane?` %in% 
+    c("Once a year or less","Once a month or less")
+  ) %>%
+  drop_na(`Do you ever recline your seat when you fly?`, Age, Gender)
 ```
 
 ---
 # Recline by height
 
 ```{r}
-fly_sub$`Do you ever recline your seat when you fly?` <- factor(
-  fly_sub$`Do you ever recline your seat when you fly?`, levels=c(
-    "Never","Once in a while","About half the time",
-    "Usually","Always"))
-ggplot(fly_sub, aes(y=`How tall are you?`, x=`Do you ever recline your seat when you fly?`)) + geom_boxplot() + coord_flip()
+fly_sub <- fly_sub %>% 
+  mutate(`Do you ever recline your seat when you fly?` = 
+    fct_relevel(`Do you ever recline your seat when you fly?`,
+      "Never","Once in a while","About half the time","Usually","Always"
+    )
+  )
+ggplot(fly_sub, aes(
+    x=`Do you ever recline your seat when you fly?`, 
+    y=`How tall are you?`
+  )) + geom_boxplot() + coord_flip()
 ```
 
 
@@ -423,27 +451,34 @@ ggplot(fly_sub, aes(x=`Do you ever recline your seat when you fly?`,
 # Facets
 
 ```{r}
-ggplot(fly_sub, 
-       aes(x=`In general, is itrude to bring a baby on a plane?`)) + 
-  geom_bar() + coord_flip() + facet_wrap(~Gender)
+ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`)) + 
+  geom_bar() + 
+  coord_flip() + 
+  facet_wrap(~Gender)
 ```
 
 ---
 # Facets
 
 ```{r}
-fly_sub$Age <- factor(fly_sub$Age, levels=c("18-29","30-44","45-60","> 60"))
+fly_sub <- fly_sub %>% 
+  mutate(Age = factor(Age, levels=c("18-29","30-44","45-60","> 60")))
 ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`)) + 
-  geom_bar() + coord_flip() + facet_grid(Age~Gender)
+  geom_bar() + 
+  coord_flip() + 
+  facet_grid(Age~Gender)
 ```
 
 ---
 # Color palettes - default
 
 ```{r}
-p <- ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`,
-                    fill=Gender)) + 
-  geom_bar(position="fill") + coord_flip() + facet_wrap(~Age, ncol=5)
+p <- ggplot(fly_sub, aes(
+  x=`In general, is itrude to bring a baby on a plane?`, fill=Gender
+)) + 
+  geom_bar(position="fill") + 
+  coord_flip() + 
+  facet_wrap(~Age, ncol=5)
 p
 ```
 
@@ -539,9 +574,12 @@ display.brewer.all()
 # Proximity
 
 ```{r fig.show='hide'}
-ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`,
-                    fill=Gender)) + 
-  geom_bar(position="fill") + coord_flip() + facet_wrap(~Age, ncol=5)
+ggplot(fly_sub, aes(
+  x=`In general, is itrude to bring a baby on a plane?`,fill=Gender
+  )) + 
+  geom_bar(position="fill") + 
+  coord_flip() + 
+  facet_wrap(~Age, ncol=5)
 ```
 
 With this arrangement we can see proportion of gender within each rudeness category, and compare these across age groups.  How could we arrange this differently?
@@ -550,9 +588,12 @@ With this arrangement we can see proportion of gender within each rudeness categ
 
 
 ```{r echo=FALSE}
-ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`,
-                    fill=Gender)) + 
-  geom_bar(position="fill") + coord_flip() + facet_wrap(~Age, ncol=5)
+ggplot(fly_sub, aes(
+  x=`In general, is itrude to bring a baby on a plane?`, fill=Gender
+  )) + 
+  geom_bar(position="fill") + 
+  coord_flip() + 
+  facet_wrap(~Age, ncol=5)
 ```
 
 
@@ -560,18 +601,24 @@ ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`,
 # Proximity
 
 ```{r fig.show='hide'}
-ggplot(fly_sub, aes(x=Gender,
-   fill=`In general, is itrude to bring a baby on a plane?`)) + 
-  geom_bar(position="fill") + coord_flip() + facet_wrap(~Age, ncol=5) +
+ggplot(fly_sub, aes(
+  x=Gender,fill=`In general, is itrude to bring a baby on a plane?`
+  )) + 
+  geom_bar(position="fill") + 
+  coord_flip() + 
+  facet_wrap(~Age, ncol=5) +
   theme(legend.position="bottom")
 ```
 
 ---
 
 ```{r echo=FALSE}
-ggplot(fly_sub, aes(x=Gender,
-                    fill=`In general, is itrude to bring a baby on a plane?`)) + 
-  geom_bar(position="fill") + coord_flip() + facet_wrap(~Age, ncol=5) + theme(legend.position="bottom")
+ggplot(fly_sub, aes(
+  x=Gender,fill=`In general, is itrude to bring a baby on a plane?`
+  )) + 
+  geom_bar(position="fill") + 
+  coord_flip() + 
+  facet_wrap(~Age, ncol=5) + theme(legend.position="bottom")
 ```
 
 What is different about the comparison now?
@@ -580,9 +627,11 @@ What is different about the comparison now?
 # Another arrangement
 
 ```{r fig.show='hide'}
-ggplot(fly_sub, aes(x=Age,
-                    fill=`In general, is itrude to bring a baby on a plane?`)) + 
-  geom_bar(position="fill") + coord_flip() + facet_wrap(~Gender, ncol=5) + 
+ggplot(fly_sub, aes(
+  x=Age, fill=`In general, is itrude to bring a baby on a plane?`)) + 
+  geom_bar(position="fill") + 
+  coord_flip() + 
+  facet_wrap(~Gender, ncol=5) + 
   theme(legend.position="bottom")
 ```
 
@@ -601,10 +650,14 @@ The `ggthemes` package has many different styles for the plots. Other packages s
 
 ```{r fig.show='hide'}
 library(xkcd)
-ggplot(fly_sub, aes(x=Gender,
-                    fill=`In general, is itrude to bring a baby on a plane?`)) + 
-  geom_bar(position="fill") + coord_flip() + facet_wrap(~Age, ncol=5) +
-  theme_xkcd() + theme(legend.position="bottom")
+ggplot(fly_sub, aes(
+  x=Gender,fill=`In general, is itrude to bring a baby on a plane?`
+  )) + 
+  geom_bar(position="fill") + 
+  coord_flip() + 
+  facet_wrap(~Age, ncol=5) +
+  theme_xkcd() + 
+  theme(legend.position="bottom")
 ```
 
 See the [vignette](https://cran.r-project.org/web/packages/xkcd/vignettes/xkcd-intro.pdf) for instructions on installing the xkcd font. 

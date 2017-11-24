@@ -211,7 +211,7 @@ The US has been rocking it at reducing tb incidence, across most age groups, and
 ---
 # Maps
 
-Make a world map, by merging iso2 with country codes to make a chloropleth
+Make a world map, by merging iso2 with country codes to make a choloropleth
 
 ```{r}
 data("ISO_3166_1")
@@ -267,7 +267,7 @@ ggplot(df, aes(x=v2, y=v1, fill=v2)) +
 ```
 
 ---
-class: inverse middle 
+class: inverse 
 # Your turn
 
 - Question?
@@ -336,7 +336,7 @@ $$P(X\geq x) = \sum_{i=x}^{K} \binom{K}{i} \left(\frac{1}{m}\right)^i\left(\frac
 
 For $x=4, K=17, m=20$
 
-```{r}
+```{r, eval = FALSE}
 pvisual(4, 17, m=20)
 ```
 

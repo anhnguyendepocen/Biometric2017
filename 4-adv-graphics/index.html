@@ -13,7 +13,7 @@ class: center, middle, inverse, title-slide
 
 # Exploring data and models visually <br> Biometrics by the Beach 2017
 ## Advanced plots and inference
-### Di Cook (<a href="mailto:dicook@monash.edu">dicook@monash.edu</a>, <span class="citation">@visnut</span>) <br> Earo Wang (<a href="mailto:earo.wang@monash.edu">earo.wang@monash.edu</a>, <span class="citation">@earowang</span>)
+### Di Cook (<a href="mailto:dicook@monash.edu">dicook@monash.edu</a>, <span class="citation" data-cites="visnut">@visnut</span>) <br> Earo Wang (<a href="mailto:earo.wang@monash.edu">earo.wang@monash.edu</a>, <span class="citation" data-cites="earowang">@earowang</span>)
 ### <a href="https://github.com/dicook/Biometric2017" class="uri">https://github.com/dicook/Biometric2017</a>
 
 ---
@@ -233,7 +233,7 @@ What do you learn about tb incidence in the USA by gender and age and year from 
 ---
 # Maps
 
-Make a world map, by merging iso2 with country codes to make a chloropleth
+Make a world map, by merging iso2 with country codes to make a choloropleth
 
 
 ```r
@@ -296,7 +296,7 @@ ggplot(df, aes(x=v2, y=v1, fill=v2)) +
 &lt;img src="index_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
-class: inverse middle 
+class: inverse 
 # Your turn
 
 - Question?
@@ -362,8 +362,6 @@ For `\(x=4, K=17, m=20\)`
 
 ```r
 pvisual(4, 17, m=20)
-     x simulated       binom
-[1,] 4    0.0198 0.008800605
 ```
 
 ---
@@ -469,7 +467,8 @@ This work is licensed under the Creative Commons Attribution-Noncommercial 3.0 U
 "highlightLines": true,
 "countIncrementalSlides": false
 });
-if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});</script>
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});
+(function() {var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler"); if (!r) return; s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }"; d.head.appendChild(s);})();</script>
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({

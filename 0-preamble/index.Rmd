@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   error = FALSE, 
   collapse = TRUE,
-  comment = "",
+  comment = "#>",
   fig.height = 8,
   fig.width = 12,
   fig.align = "center",
@@ -84,7 +84,7 @@ class: inverse middle
 # Your turn: Getting started
 
 - __Download a zip archive__ of the workshop files from  [github site](https://github.com/dicook/Biometric2017) contains all the markdown files, code files, and data for this workshop. __Unzip the file__ and __rename__ it `Biometric2017`
-- __Create a project__ helps organise your work over these next few days called `Biometric2017`. 
+- __Create a project__ helps organise your work for the day called `Biometric2017`. 
 
 ![](projectname.png)
 

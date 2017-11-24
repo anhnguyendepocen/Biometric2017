@@ -13,7 +13,7 @@ class: center, middle, inverse, title-slide
 
 # Exploring data and models visually <br> Biometrics by the Beach 2017
 ## Grammar of graphics with ggplot2
-### Di Cook (<a href="mailto:dicook@monash.edu">dicook@monash.edu</a>, <span class="citation">@visnut</span>) <br> Earo Wang (<a href="mailto:earo.wang@monash.edu">earo.wang@monash.edu</a>, <span class="citation">@earowang</span>)
+### Di Cook (<a href="mailto:dicook@monash.edu">dicook@monash.edu</a>, <span class="citation" data-cites="visnut">@visnut</span>) <br> Earo Wang (<a href="mailto:earo.wang@monash.edu">earo.wang@monash.edu</a>, <span class="citation" data-cites="earowang">@earowang</span>)
 ### <a href="https://github.com/dicook/Biometric2017" class="uri">https://github.com/dicook/Biometric2017</a>
 
 ---
@@ -80,16 +80,18 @@ Variable in the data is directly mapped to an element in the plot &lt;/font&gt;
 
 ```r
 glimpse(autism)
-Observations: 604
-Variables: 7
-$ childid  &lt;int&gt; 1, 1, 1, 1, 1, 10, 10, 10, 10, 100, 100, 100, 100, 10...
-$ sicdegp  &lt;fctr&gt; high, high, high, high, high, low, low, low, low, hi...
-$ age2     &lt;dbl&gt; 0, 1, 3, 7, 11, 0, 1, 7, 11, 0, 1, 3, 7, 0, 1, 7, 11,...
-$ vsae     &lt;int&gt; 6, 7, 18, 25, 27, 9, 11, 18, 39, 15, 24, 37, 135, 8, ...
-$ gender   &lt;fctr&gt; male, male, male, male, male, male, male, male, male...
-$ race     &lt;fctr&gt; white, white, white, white, white, white, white, whi...
-$ bestest2 &lt;fctr&gt; pdd, pdd, pdd, pdd, pdd, autism, autism, autism, aut...
+#&gt; Observations: 604
+#&gt; Variables: 7
+#&gt; $ childid  &lt;int&gt; 1, 1, 1, 1, 1, 10, 10, 10, 10, 100, 100, 100, 100, 10...
+#&gt; $ sicdegp  &lt;fctr&gt; high, high, high, high, high, low, low, low, low, hi...
+#&gt; $ age2     &lt;dbl&gt; 0, 1, 3, 7, 11, 0, 1, 7, 11, 0, 1, 3, 7, 0, 1, 7, 11,...
+#&gt; $ vsae     &lt;int&gt; 6, 7, 18, 25, 27, 9, 11, 18, 39, 15, 24, 37, 135, 8, ...
+#&gt; $ gender   &lt;fctr&gt; male, male, male, male, male, male, male, male, male...
+#&gt; $ race     &lt;fctr&gt; white, white, white, white, white, white, white, whi...
+#&gt; $ bestest2 &lt;fctr&gt; pdd, pdd, pdd, pdd, pdd, autism, autism, autism, aut...
 ```
+
+`?HLMdiag::autism` for details on the data
 
 ---
 # Plotting points
@@ -259,36 +261,38 @@ That's not what I wanted ....
 [41% Of Fliers Think You’re Rude If You Recline Your Seat](http://fivethirtyeight.com/datalab/airplane-etiquette-recline-seat/)
 
 
-```
-Observations: 1,040
-Variables: 27
-$ RespondentID                                                                                                                               &lt;dbl&gt; ...
-$ `How often do you travel by plane?`                                                                                                        &lt;chr&gt; ...
-$ `Do you ever recline your seat when you fly?`                                                                                              &lt;chr&gt; ...
-$ `How tall are you?`                                                                                                                        &lt;int&gt; ...
-$ `Do you have any children under 18?`                                                                                                       &lt;chr&gt; ...
-$ `In a row of three seats, who should get to use the two arm rests?`                                                                        &lt;chr&gt; ...
-$ `In a row of two seats, who should get to use the middle arm rest?`                                                                        &lt;chr&gt; ...
-$ `Who should have control over the window shade?`                                                                                           &lt;chr&gt; ...
-$ `Is itrude to move to an unsold seat on a plane?`                                                                                          &lt;chr&gt; ...
-$ `Generally speaking, is it rude to say more than a few words tothe stranger sitting next to you on a plane?`                               &lt;chr&gt; ...
-$ `On a 6 hour flight from NYC to LA, how many times is it acceptable to get up if you're not in an aisle seat?`                             &lt;chr&gt; ...
-$ `Under normal circumstances, does a person who reclines their seat during a flight have any obligation to the person sitting behind them?` &lt;chr&gt; ...
-$ `Is itrude to recline your seat on a plane?`                                                                                               &lt;chr&gt; ...
-$ `Given the opportunity, would you eliminate the possibility of reclining seats on planes entirely?`                                        &lt;chr&gt; ...
-$ `Is it rude to ask someone to switch seats with you in order to be closer to friends?`                                                     &lt;chr&gt; ...
-$ `Is itrude to ask someone to switch seats with you in order to be closer to family?`                                                       &lt;chr&gt; ...
-$ `Is it rude to wake a passenger up if you are trying to go to the bathroom?`                                                               &lt;chr&gt; ...
-$ `Is itrude to wake a passenger up if you are trying to walk around?`                                                                       &lt;chr&gt; ...
-$ `In general, is itrude to bring a baby on a plane?`                                                                                        &lt;chr&gt; ...
-$ `In general, is it rude to knowingly bring unruly children on a plane?`                                                                    &lt;chr&gt; ...
-$ `Have you ever used personal electronics during take off or landing in violation of a flight attendant's direction?`                       &lt;chr&gt; ...
-$ `Have you ever smoked a cigarette in an airplane bathroom when it was against the rules?`                                                  &lt;chr&gt; ...
-$ Gender                                                                                                                                     &lt;chr&gt; ...
-$ Age                                                                                                                                        &lt;chr&gt; ...
-$ `Household Income`                                                                                                                         &lt;chr&gt; ...
-$ Education                                                                                                                                  &lt;chr&gt; ...
-$ `Location (Census Region)`                                                                                                                 &lt;chr&gt; ...
+```r
+fly &lt;- read_csv("../data/flying-etiquette.csv")
+glimpse(fly)
+#&gt; Observations: 1,040
+#&gt; Variables: 27
+#&gt; $ RespondentID                                                                                                                               &lt;dbl&gt; ...
+#&gt; $ `How often do you travel by plane?`                                                                                                        &lt;chr&gt; ...
+#&gt; $ `Do you ever recline your seat when you fly?`                                                                                              &lt;chr&gt; ...
+#&gt; $ `How tall are you?`                                                                                                                        &lt;int&gt; ...
+#&gt; $ `Do you have any children under 18?`                                                                                                       &lt;chr&gt; ...
+#&gt; $ `In a row of three seats, who should get to use the two arm rests?`                                                                        &lt;chr&gt; ...
+#&gt; $ `In a row of two seats, who should get to use the middle arm rest?`                                                                        &lt;chr&gt; ...
+#&gt; $ `Who should have control over the window shade?`                                                                                           &lt;chr&gt; ...
+#&gt; $ `Is itrude to move to an unsold seat on a plane?`                                                                                          &lt;chr&gt; ...
+#&gt; $ `Generally speaking, is it rude to say more than a few words tothe stranger sitting next to you on a plane?`                               &lt;chr&gt; ...
+#&gt; $ `On a 6 hour flight from NYC to LA, how many times is it acceptable to get up if you're not in an aisle seat?`                             &lt;chr&gt; ...
+#&gt; $ `Under normal circumstances, does a person who reclines their seat during a flight have any obligation to the person sitting behind them?` &lt;chr&gt; ...
+#&gt; $ `Is itrude to recline your seat on a plane?`                                                                                               &lt;chr&gt; ...
+#&gt; $ `Given the opportunity, would you eliminate the possibility of reclining seats on planes entirely?`                                        &lt;chr&gt; ...
+#&gt; $ `Is it rude to ask someone to switch seats with you in order to be closer to friends?`                                                     &lt;chr&gt; ...
+#&gt; $ `Is itrude to ask someone to switch seats with you in order to be closer to family?`                                                       &lt;chr&gt; ...
+#&gt; $ `Is it rude to wake a passenger up if you are trying to go to the bathroom?`                                                               &lt;chr&gt; ...
+#&gt; $ `Is itrude to wake a passenger up if you are trying to walk around?`                                                                       &lt;chr&gt; ...
+#&gt; $ `In general, is itrude to bring a baby on a plane?`                                                                                        &lt;chr&gt; ...
+#&gt; $ `In general, is it rude to knowingly bring unruly children on a plane?`                                                                    &lt;chr&gt; ...
+#&gt; $ `Have you ever used personal electronics during take off or landing in violation of a flight attendant's direction?`                       &lt;chr&gt; ...
+#&gt; $ `Have you ever smoked a cigarette in an airplane bathroom when it was against the rules?`                                                  &lt;chr&gt; ...
+#&gt; $ Gender                                                                                                                                     &lt;chr&gt; ...
+#&gt; $ Age                                                                                                                                        &lt;chr&gt; ...
+#&gt; $ `Household Income`                                                                                                                         &lt;chr&gt; ...
+#&gt; $ Education                                                                                                                                  &lt;chr&gt; ...
+#&gt; $ `Location (Census Region)`                                                                                                                 &lt;chr&gt; ...
 ```
 
 ---
@@ -296,7 +300,7 @@ $ `Location (Census Region)`                                                    
 
 - Mix of categorical and quantiative variables. 
 - What mappings are appropriate? 
-- Area for counts of categories, 
+- Area for counts of categories.
 - side-by-side boxplots for mixed pair. 
 
 ---
@@ -310,39 +314,58 @@ ggplot(fly, aes(x=`How often do you travel by plane?`)) +
 
 &lt;img src="index_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
 
-Categories are not sorted
+**Any issue about the plot itself?**
+
+--
+
+Categories are not sorted.
 
 ---
 # Sorted categories
 
 
 ```r
-fly$`How often do you travel by plane?` &lt;- 
-  factor(fly$`How often do you travel by plane?`, levels=c(
-    "Never","Once a year or less","Once a month or less",
-    "A few times per month","A few times per week","Every day"))
-ggplot(fly, aes(x=`How often do you travel by plane?`)) + geom_bar() + coord_flip()
+fly &lt;- fly %&gt;% 
+  mutate(`How often do you travel by plane?` = 
+    fct_relevel(`How often do you travel by plane?`,
+      "Never","Once a year or less","Once a month or less",
+      "A few times per month","A few times per week","Every day"
+    )
+  )
+ggplot(fly, aes(x=`How often do you travel by plane?`)) + 
+  geom_bar() + 
+  coord_flip()
 ```
 
 &lt;img src="index_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
 
+---
+# Sorted categories
+
+
 ```r
-ggplot(fly, aes(x=`How often do you travel by plane?`, 
-                fill=`How often do you travel by plane?`)) + geom_bar() + coord_flip() +
+ggplot(fly, 
+  aes(x=`How often do you travel by plane?`, 
+    fill=`How often do you travel by plane?`)
+  ) + 
+  geom_bar() + 
+  coord_flip() +
   scale_fill_brewer(palette="Dark2")
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-23-2.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Filter data
 
 
 ```r
-fly_sub &lt;- fly %&gt;% filter(`How often do you travel by plane?` %in% 
-                            c("Once a year or less","Once a month or less")) %&gt;%
-  filter(!is.na(`Do you ever recline your seat when you fly?`)) %&gt;%
-  filter(!is.na(Age)) %&gt;% filter(!is.na(Gender))
+fly_sub &lt;- fly %&gt;% 
+  filter(
+    `How often do you travel by plane?` %in% 
+    c("Once a year or less","Once a month or less")
+  ) %&gt;%
+  drop_na(`Do you ever recline your seat when you fly?`, Age, Gender)
 ```
 
 ---
@@ -350,14 +373,19 @@ fly_sub &lt;- fly %&gt;% filter(`How often do you travel by plane?` %in%
 
 
 ```r
-fly_sub$`Do you ever recline your seat when you fly?` &lt;- factor(
-  fly_sub$`Do you ever recline your seat when you fly?`, levels=c(
-    "Never","Once in a while","About half the time",
-    "Usually","Always"))
-ggplot(fly_sub, aes(y=`How tall are you?`, x=`Do you ever recline your seat when you fly?`)) + geom_boxplot() + coord_flip()
+fly_sub &lt;- fly_sub %&gt;% 
+  mutate(`Do you ever recline your seat when you fly?` = 
+    fct_relevel(`Do you ever recline your seat when you fly?`,
+      "Never","Once in a while","About half the time","Usually","Always"
+    )
+  )
+ggplot(fly_sub, aes(
+    x=`Do you ever recline your seat when you fly?`, 
+    y=`How tall are you?`
+  )) + geom_boxplot() + coord_flip()
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-25-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -432,37 +460,44 @@ Use your cheat sheet to work out how to make plot to explore the relationship be
 
 
 ```r
-ggplot(fly_sub, 
-       aes(x=`In general, is itrude to bring a baby on a plane?`)) + 
-  geom_bar() + coord_flip() + facet_wrap(~Gender)
+ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`)) + 
+  geom_bar() + 
+  coord_flip() + 
+  facet_wrap(~Gender)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-33-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Facets
 
 
 ```r
-fly_sub$Age &lt;- factor(fly_sub$Age, levels=c("18-29","30-44","45-60","&gt; 60"))
+fly_sub &lt;- fly_sub %&gt;% 
+  mutate(Age = factor(Age, levels=c("18-29","30-44","45-60","&gt; 60")))
 ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`)) + 
-  geom_bar() + coord_flip() + facet_grid(Age~Gender)
+  geom_bar() + 
+  coord_flip() + 
+  facet_grid(Age~Gender)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-33-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Color palettes - default
 
 
 ```r
-p &lt;- ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`,
-                    fill=Gender)) + 
-  geom_bar(position="fill") + coord_flip() + facet_wrap(~Age, ncol=5)
+p &lt;- ggplot(fly_sub, aes(
+  x=`In general, is itrude to bring a baby on a plane?`, fill=Gender
+)) + 
+  geom_bar(position="fill") + 
+  coord_flip() + 
+  facet_wrap(~Age, ncol=5)
 p
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
 
 What do we learn?
 
@@ -474,7 +509,7 @@ What do we learn?
 p + scale_fill_brewer(palette="Dark2") 
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Color blind-proofing
@@ -491,7 +526,7 @@ p + scale_fill_manual("", values=clrs) + theme(legend.position = "none")
 
 ---
 
-![](index_files/figure-html/unnamed-chunk-37-1.png)![](index_files/figure-html/unnamed-chunk-37-2.png)
+![](index_files/figure-html/unnamed-chunk-38-1.png)![](index_files/figure-html/unnamed-chunk-38-2.png)
 
 ---
 # Perceptual principles
@@ -517,13 +552,13 @@ p + scale_fill_manual("", values=clrs) + theme(legend.position = "none")
 
 Can you find the odd one out?
 
-&lt;img src="index_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
 Is it easier now?
 
-&lt;img src="index_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -535,7 +570,7 @@ Is it easier now?
 
 ---
 
-&lt;img src="index_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-41-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -543,9 +578,12 @@ Is it easier now?
 
 
 ```r
-ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`,
-                    fill=Gender)) + 
-  geom_bar(position="fill") + coord_flip() + facet_wrap(~Age, ncol=5)
+ggplot(fly_sub, aes(
+  x=`In general, is itrude to bring a baby on a plane?`,fill=Gender
+  )) + 
+  geom_bar(position="fill") + 
+  coord_flip() + 
+  facet_wrap(~Age, ncol=5)
 ```
 
 With this arrangement we can see proportion of gender within each rudeness category, and compare these across age groups.  How could we arrange this differently?
@@ -553,7 +591,7 @@ With this arrangement we can see proportion of gender within each rudeness categ
 ---
 
 
-&lt;img src="index_files/figure-html/unnamed-chunk-42-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-43-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -561,15 +599,18 @@ With this arrangement we can see proportion of gender within each rudeness categ
 
 
 ```r
-ggplot(fly_sub, aes(x=Gender,
-   fill=`In general, is itrude to bring a baby on a plane?`)) + 
-  geom_bar(position="fill") + coord_flip() + facet_wrap(~Age, ncol=5) +
+ggplot(fly_sub, aes(
+  x=Gender,fill=`In general, is itrude to bring a baby on a plane?`
+  )) + 
+  geom_bar(position="fill") + 
+  coord_flip() + 
+  facet_wrap(~Age, ncol=5) +
   theme(legend.position="bottom")
 ```
 
 ---
 
-&lt;img src="index_files/figure-html/unnamed-chunk-44-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-45-1.png" style="display: block; margin: auto;" /&gt;
 
 What is different about the comparison now?
 
@@ -578,15 +619,17 @@ What is different about the comparison now?
 
 
 ```r
-ggplot(fly_sub, aes(x=Age,
-                    fill=`In general, is itrude to bring a baby on a plane?`)) + 
-  geom_bar(position="fill") + coord_flip() + facet_wrap(~Gender, ncol=5) + 
+ggplot(fly_sub, aes(
+  x=Age, fill=`In general, is itrude to bring a baby on a plane?`)) + 
+  geom_bar(position="fill") + 
+  coord_flip() + 
+  facet_wrap(~Gender, ncol=5) + 
   theme(legend.position="bottom")
 ```
 
 ---
 
-&lt;img src="index_files/figure-html/unnamed-chunk-46-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-47-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Themes
@@ -596,17 +639,21 @@ The `ggthemes` package has many different styles for the plots. Other packages s
 
 ```r
 library(xkcd)
-ggplot(fly_sub, aes(x=Gender,
-                    fill=`In general, is itrude to bring a baby on a plane?`)) + 
-  geom_bar(position="fill") + coord_flip() + facet_wrap(~Age, ncol=5) +
-  theme_xkcd() + theme(legend.position="bottom")
+ggplot(fly_sub, aes(
+  x=Gender,fill=`In general, is itrude to bring a baby on a plane?`
+  )) + 
+  geom_bar(position="fill") + 
+  coord_flip() + 
+  facet_wrap(~Age, ncol=5) +
+  theme_xkcd() + 
+  theme(legend.position="bottom")
 ```
 
 See the [vignette](https://cran.r-project.org/web/packages/xkcd/vignettes/xkcd-intro.pdf) for instructions on installing the xkcd font. 
 
 ---
 
-&lt;img src="index_files/figure-html/unnamed-chunk-48-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-49-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: inverse middle 
@@ -636,7 +683,8 @@ This work is licensed under the Creative Commons Attribution-Noncommercial 3.0 U
 "highlightLines": true,
 "countIncrementalSlides": false
 });
-if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});</script>
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});
+(function() {var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler"); if (!r) return; s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }"; d.head.appendChild(s);})();</script>
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({

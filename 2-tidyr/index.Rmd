@@ -18,12 +18,13 @@ knitr::opts_chunk$set(
   message = FALSE,
   warning = FALSE,
   collapse = TRUE,
-  comment = "",
+  comment = "#>",
   fig.height = 4,
   fig.width = 8,
   fig.align = "center",
   cache = FALSE
 )
+options(tibble.print_min = 5)
 ```
 
 ```{r echo=FALSE}
@@ -58,9 +59,10 @@ library(broom)
 Example:
 
 ```{r}
-student2012.sub <- readRDS("../data/student_sub.rds")
-# table(student2012.sub$CNT)
-student2012.sub %>% group_by(CNT) %>% tally()
+student2012.sub <- read_rds("../data/student_sub.rds")
+student2012.sub %>% 
+  group_by(CNT) %>% 
+  tally()
 ```
 
 ---
@@ -217,13 +219,14 @@ Each of these questions involves different summaries of the data.
 
 When gathering, you need to specify the **keys** (identifiers) and the **values** (measures).
 
-- Keys/Identifiers:
+* Keys/Identifiers:
   - Identify a record (must be unique)
   - Example: Indices on an random variable
   - Fixed by design of experiment (known in advance)
   - May be single or composite (may have one or more variables)
 
-- Values/Measures:
+
+* Values/Measures:
   - Collected during the experiment (not known in advance)
   - Usually numeric quantities
 
@@ -231,8 +234,8 @@ When gathering, you need to specify the **keys** (identifiers) and the **values*
 # Gathering the French Fries
 
 ```{r}
-ff_long <- gather(french_fries, key = variable, value = 
-                    rating, potato:painty)
+ff_long <- gather(french_fries, key = variable, value = rating, 
+                  potato:painty)
 head(ff_long)
 ```
 
@@ -249,18 +252,15 @@ This is called "spreading" the data.
 We use the **spread** function from `tidyr` to do this:
 
 ```{r}
-french_fries_wide <- spread(ff_long, key = variable, 
-                            value = rating)
-
+french_fries_wide <- spread(ff_long, key = variable, value = rating)
 head(french_fries_wide)
 ```
 
 ---
 # Answer some Questions
 
-- Easiest question to start is whether the ratings are similar on the different scales, potato'y, buttery, grassy, rancid and painty. 
-
-- We need to gather the data into long form, and make plots facetted by the scale. 
+* Easiest question to start is whether the ratings are similar on the different scales, potato'y, buttery, grassy, rancid and painty.
+* We need to gather the data into long form, and make plots facetted by the scale. 
 
 ---
 # Ratings on the Different Scales
@@ -274,7 +274,8 @@ head(ff.m)
 --
 
 ```{r, fig.height=2, fig.width=8}
-ggplot(data=ff.m, aes(x=rating)) + geom_histogram(binwidth=2) + 
+ggplot(data=ff.m, aes(x=rating)) + 
+  geom_histogram(binwidth=2) + 
   facet_wrap(~type, ncol=5) 
 ```
 
