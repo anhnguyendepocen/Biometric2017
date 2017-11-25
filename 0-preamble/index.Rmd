@@ -153,8 +153,8 @@ devtools::install_github("haleyjeppson/ggmosaic")
 tt <- tibble::tribble(
   ~ Time, ~ Topic,
   "09:20 - 11:00", "Grammar of graphics with ggplot2",
-  "11:30 - 12:00", "*Morning tea*",
-  "12:00 - 13:00", "Grammar of graphics with ggplot2 & Tidy data",
+  "11:00 - 11:30", "*Morning tea*",
+  "11:30 - 13:00", "Grammar of graphics with ggplot2 & Tidy data",
   "13:00 - 14:00", "*Lunch*",
   "14:00 - 14:40", "Tidy data",
   "14:40 - 15:10", "Data manipulation",
