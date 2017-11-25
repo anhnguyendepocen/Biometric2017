@@ -36,6 +36,18 @@ knitr::opts_chunk$set(
 
 ![](Hello-earo.png)
 
+---
+
+# Poll: How proficient are you in using R?
+
+* **Guru**: The R core team come to me for advice.
+* **Expert**: I have written several packages on CRAN.
+* **Skilled**: I use it regularly and it is an important part of my job.
+* **Comfortable**: I use it often and am comfortable with the tool.
+* **User**: I use it sometimes, but I am often searching around for the right function.
+* **Learner**: I have used it a few times.
+* **Beginner**: I’ve managed to download and install it.
+* **Unknown**: Why are you speaking like a pirate?
 
 ---
 # Getting up and running
@@ -132,6 +144,27 @@ devtools::install_github("haleyjeppson/ggmosaic")
 - RMarkdown [cheat sheet](https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf), [reference guide](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
 - Q/A site: [http://stackoverflow.com](http://stackoverflow.com)
 - Dynamic Documents with R and knitr [Yihui Xie](http://yihui.name/knitr/)
+
+---
+
+# Agenda
+
+```{r, echo = FALSE}
+tt <- tibble::tribble(
+  ~ Time, ~ Topic,
+  "09:30 - 11:00", "Grammar of graphics with ggplot2",
+  "11:30 - 11:50", "*Morning tea*",
+  "11:50 - 13:00", "Grammar of graphics with ggplot2 & Tidy data",
+  "13:00 - 14:00", "*Lunch*",
+  "14:00 - 14:40", "Tidy data",
+  "14:40 - 15:20", "Data manipulation",
+  "15:20 - 15:40", "*Afternoon tea*",
+  "15:40 - 16:10", "Advanced plots and inference",
+  "16:10 - 17:00", "Data exercise"
+)
+tt
+```
+
 
 ---
 # Share and share alike
