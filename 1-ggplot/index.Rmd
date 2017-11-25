@@ -55,12 +55,10 @@ class: inverse middle
 How would you describe this plot?
 
 ```{r echo=FALSE}
-ggplot(filter(autism, 
-              childid %in% sample(unique(childid), 20)), 
-       aes(x=age2+2, y=vsae, group=childid, colour=gender)) + 
+olive <- read_csv("../data/olive.csv")
+ggplot(olive, aes(x = oleic, y = linoleic, colour = factor(region))) +
   geom_point() +
-  geom_line() + xlim(c(0, 15)) +
-  xlab("Age (in years)") + ylab("Vineland Socialization Age Equivalent")
+  theme(aspect.ratio = 1)
 ```
 
 ---
@@ -70,10 +68,9 @@ class: inverse middle
 What about this one?
 
 ```{r echo=FALSE}
-ggplot(autism, aes(x=factor(age2+2), y=vsae, colour=bestest2)) + 
-  geom_boxplot() + 
-  xlab("Age (in years)") + ylab("Vineland Socialization Age Equivalent") +
-  scale_colour_hue("Diagnosis at age 2")
+ggplot(olive, aes(x = factor(area), y = eicosenoic)) +
+  geom_boxplot() +
+  xlab("Area")
 ```
 
 ---
@@ -101,20 +98,19 @@ Additional components
 Variable in the data is directly mapped to an element in the plot </font>
 
 ---
-# Data - Autism
+# Data - Olive
 
 ```{r}
-glimpse(autism)
+glimpse(olive)
 ```
-
-`?HLMdiag::autism` for details on the data
 
 ---
 # Plotting points
 
 ```{r}
-ggplot(autism, aes(x=age2, y=vsae)) + 
-  geom_point()
+ggplot(olive, aes(x = oleic, y = linoleic, colour = factor(region))) +
+  geom_point() +
+  theme(aspect.ratio = 1)
 ```
 
 ---
@@ -135,11 +131,13 @@ autism, x and y position along a line, point, none
 ```
 
 ---
-# Jittering points
+# Adding density
 
 ```{r}
-ggplot(autism, aes(x=age2, y=vsae)) + 
-  geom_jitter(width=0.3, height=0)
+ggplot(olive, aes(x = oleic, y = linoleic, colour = factor(region))) +
+  geom_point() +
+  geom_density2d() +
+  theme(aspect.ratio = 1)
 ```
 
 ---
@@ -154,59 +152,15 @@ How is the data mapped to graphical elements?
 - aesthetics: _________
 - geom: ________
 - transformations: _________
-
-```{r echo=FALSE, eval=FALSE}
-autism, x and y position along a line, point, jitter (random noise component added to each x, y value)
-```
-
----
-# Adding lines
-
-```{r}
-ggplot(autism, aes(x=age2, y=vsae)) + 
-  geom_point() + geom_line()
-```
-
----
-# Not the lines we want
-
-```{r}
-ggplot(autism, aes(x=age2, y=vsae, group=childid)) + 
-  geom_point() + geom_line()
-```
 
 ---
 # Too much ink
 
 ```{r}
-ggplot(autism, aes(x=age2, y=vsae, group=childid)) + 
-  geom_point() + geom_line(alpha=0.1)
-```
-
----
-# Log scale y?
-
-```{r}
-ggplot(autism, aes(x=age2, y=vsae, group=childid)) + 
-  geom_point() + geom_line(alpha=0.2) + scale_y_log10()
-```
-
----
-# By age 2 diagnosis
-
-```{r}
-ggplot(autism, aes(x=age2, y=vsae, group=childid, colour=bestest2)) + 
-  geom_point() + geom_line(alpha=0.5) + scale_y_log10()
-```
-
----
-# Refine groups
-
-```{r}
-ggplot(autism, aes(x=age2, y=vsae, colour=bestest2)) + 
-  geom_point(alpha=0.1) + geom_line(aes(group=childid), alpha=0.1) + 
-  geom_smooth(se=F) +
-  scale_y_log10() 
+ggplot(olive, aes(x = oleic, y = linoleic, colour = factor(region))) +
+  geom_point(alpha = 0.6) +
+  geom_density2d(alpha = 0.6) +
+  theme(aspect.ratio = 1)
 ```
 
 ---
@@ -215,58 +169,10 @@ class: inverse middle
 
 ![](lorikeets.png)
 
-What do we learn about autism, age, and the diagnosis at age 2?
+What do we learn about the composition of fatty acids found in the lipid fraction of Italian olive oils?
 
 ```{r echo=FALSE, eval=FALSE}
 In terms of categorisation into either pdd or autism the vsae score is not distinct, but on average the autism diagnosis 2 year olds have lower scores. There a lot of overlap between ths group.
-```
-
----
-class: inverse middle 
-# Your turn
-
-![](lorikeets.png)
-
-How is the data mapped to graphical elements?
-
-- data: _______
-- aesthetics: _________
-- geom: ________
-- transformations: _________
-
-```{r echo=FALSE, eval=FALSE}
-autism, age to x and vsae score to y position, besttest2 is mapped to color, and smoothed vsae values mapped to y position, point, line, log10 transformation of y-axis
-```
-
----
-# A different look
-
-```{r echo=FALSE}
-ggplot(autism, aes(x=age2, y=vsae, colour=bestest2)) + 
-  geom_boxplot() + scale_y_log10()
-```
-
-That's not what I wanted ....
-
----
-# For each age measured
-
-```{r echo=FALSE}
-ggplot(autism, aes(x=factor(age2), y=vsae, colour=bestest2)) + 
-  geom_boxplot() + scale_y_log10()
-```
-
----
-# Which is better?
-
-```{r echo=FALSE}
-p1 <- ggplot(autism, aes(x=age2, y=vsae, colour=bestest2)) + 
-  geom_point(alpha=0.1) + geom_line(aes(group=childid), alpha=0.1) + 
-  geom_smooth(se=F) +
-  scale_y_log10() + theme(legend.position="none")
-p2 <- ggplot(autism, aes(x=factor(age2), y=vsae, colour=bestest2)) + 
-  geom_boxplot() + scale_y_log10() + theme(legend.position="none")
-grid.arrange(p1, p2, ncol=2)
 ```
 
 ---
@@ -468,6 +374,134 @@ ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`)) +
   coord_flip() + 
   facet_grid(Age~Gender)
 ```
+
+---
+
+class: inverse middle 
+# Your turn 
+
+![](lorikeets.png)
+
+What's the difference between `facet_wrap()` and `facet_grid()`?
+
+---
+
+# Map example -- whale sharks
+
+```{r}
+whalesharks <- read_csv("../data/whaleshark-encounters.csv")
+library(lubridate) 
+ningaloo <- whalesharks %>% 
+  filter(grepl("Ningaloo", Locality)) %>% 
+  mutate(date=ymd(paste(`Year Collected`, `Month Collected`, 
+`Day Collected`, sep="-")))
+ningaloo %>% select(date, `Marked Individual`, Longitude, Latitude)
+```
+
+---
+
+# Track one individual
+
+```{r}
+library(ggmap) 
+map <- get_map(location=c(lon=114.1, lat=-21.9), zoom=8) 
+A524 <- ningaloo %>% 
+  filter(`Marked Individual`=="A-524") 
+ggmap(map) + 
+  geom_point(data=A524, aes(x=Longitude, y=Latitude), colour="red") + 
+  geom_line(data=A524, aes(x=Longitude, y=Latitude), colour="red") 
+```
+
+---
+
+# Histogram
+
+```{r} 
+ningaloo_nomiss <- ningaloo %>%
+  drop_na(`Marked Individual`)
+ningaloo_nomiss %>% 
+  count(`Marked Individual`, sort=TRUE) %>% 
+  ggplot(aes(x=n)) + 
+  geom_histogram(binwidth=5)
+```
+
+```{r, echo = FALSE}
+keep <- ningaloo_nomiss %>% 
+count(`Marked Individual`, sort=TRUE) %>% 
+filter(n>=40) 
+ningaloo_freqwhales <- ningaloo %>% 
+filter(`Marked Individual` %in% keep$`Marked Individual`) %>% 
+arrange(date) 
+``` 
+
+---
+
+# Facet by different individuals
+
+```{r}
+ggmap(map) + 
+  geom_point(data=ningaloo_freqwhales, 
+    aes(x=Longitude, y=Latitude, colour=`Marked Individual`)) + 
+  geom_line(data=ningaloo_freqwhales, aes(x=Longitude, y=Latitude, 
+    colour=`Marked Individual`, group=`Marked Individual`)) + 
+  facet_wrap(~`Marked Individual`, ncol=8) +
+  theme(legend.position="None")
+```
+
+---
+
+# Facet by year collected
+
+```{r}
+ggmap(map) + 
+  geom_point(data=ningaloo_freqwhales, aes(x=Longitude, y=Latitude, 
+    colour=`Marked Individual`)) + 
+  geom_line(data=ningaloo_freqwhales, aes(x=Longitude, y=Latitude, 
+  colour=`Marked Individual`, group=`Marked Individual`)) + 
+  facet_wrap(~`Year Collected`, ncol=5) +
+  theme(legend.position="None")
+```
+
+---
+
+# Facet by month collected
+
+```{r}
+ggmap(map) + 
+  geom_point(data=ningaloo_freqwhales, aes(x=Longitude, y=Latitude, 
+    colour=`Marked Individual`)) + 
+  geom_line(data=ningaloo_freqwhales, aes(x=Longitude, y=Latitude, 
+    colour=`Marked Individual`, group=`Marked Individual`)) + 
+  facet_wrap(~`Month Collected`, ncol=4) +
+  theme(legend.position="None") 
+```
+
+---
+```{r}
+baker <- read_csv("../data/baker.csv")
+```
+
+```{r}
+ggplot(baker, aes(x = X, y = Y, fill = Corn97BU)) +
+  geom_tile() +
+  theme_bw()
+```
+
+
+```{r}
+ggplot(baker, aes(x = B, y = Corn97BU)) +
+  geom_point()
+# break Cu to high/low and add regression line
+ggplot(baker, aes(x = Fe, y = Corn97BU, colour = Cu)) +
+  geom_point()
+# break Cu to high/low and add regression line
+```
+
+---
+
+class: middle inverse center
+
+# Graphical principles
 
 ---
 # Color palettes - default
