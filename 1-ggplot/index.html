@@ -173,7 +173,7 @@ What do we learn about the composition of fatty acids found in the lipid fractio
 
 ---
 
-# More example -- Soil composition data and yield
+# More example -- Soil composition data and corn yield
 
 
 ```r
@@ -197,7 +197,7 @@ baker
 
 ---
 
-# Tile plot: corn yield in the field 
+# Plotting tiles: corn yield in the field 
 
 
 ```r
@@ -211,7 +211,20 @@ ggplot(baker, aes(x = X, y = Y, fill = Corn97BU)) +
 
 ---
 
-# Association between Fe and Corn Yield by Cu
+## Plotting points between B and Corn Yield
+
+
+```r
+ggplot(baker, aes(x = B, y = Corn97BU)) +
+  geom_point() +
+  theme(aspect.ratio = 1)
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Plotting points between Fe and Corn Yield by Cu
 
 
 ```r
@@ -220,7 +233,7 @@ ggplot(baker, aes(x = Fe, y = Corn97BU, colour = Cu)) +
   theme(aspect.ratio = 1)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -235,7 +248,7 @@ ggplot(baker_cat, aes(x = Fe, y = Corn97BU, colour = Cu_cat)) +
   theme(aspect.ratio = 1)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -249,7 +262,7 @@ ggplot(baker_cat, aes(x = Fe, y = Corn97BU, colour = Cu_cat)) +
   theme(aspect.ratio = 1)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -310,9 +323,9 @@ ggplot(fly, aes(x=`How often do you travel by plane?`)) +
   geom_bar() + coord_flip()
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
 
-**Any issue about the plot itself?**
+**Any room in improving the plot?**
 
 --
 
@@ -335,7 +348,7 @@ ggplot(fly, aes(x=`How often do you travel by plane?`)) +
   coord_flip()
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Sorted categories
@@ -351,7 +364,7 @@ ggplot(fly,
   scale_fill_brewer(palette="Dark2")
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Filter data
@@ -383,7 +396,7 @@ ggplot(fly_sub, aes(
   )) + geom_boxplot() + coord_flip()
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -464,7 +477,7 @@ ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`)) +
   facet_wrap(~Gender)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-28-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Facets
@@ -479,7 +492,7 @@ ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`)) +
   facet_grid(Age~Gender)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -492,7 +505,61 @@ What's the difference between `facet_wrap()` and `facet_grid()`?
 
 ---
 
+# Temporal example -- daily temperatures
+
+
+```
+#&gt; # A tibble: 366 x 6
+#&gt;             ID       DATE  TMAX  TMIN MONTH   DAY
+#&gt;          &lt;chr&gt;     &lt;date&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;ord&gt; &lt;int&gt;
+#&gt;  1 ASN00090015 2016-01-01  20.9  17.5   Jan     1
+#&gt;  2 ASN00090015 2016-01-02  19.5  14.5   Jan     2
+#&gt;  3 ASN00090015 2016-01-03  19.3  16.2   Jan     3
+#&gt;  4 ASN00090015 2016-01-04  20.2  16.7   Jan     4
+#&gt;  5 ASN00090015 2016-01-05  20.6  16.1   Jan     5
+#&gt;  6 ASN00090015 2016-01-06  20.3  16.5   Jan     6
+#&gt;  7 ASN00090015 2016-01-07  19.7  14.8   Jan     7
+#&gt;  8 ASN00090015 2016-01-08  18.8  14.2   Jan     8
+#&gt;  9 ASN00090015 2016-01-09  19.0  11.3   Jan     9
+#&gt; 10 ASN00090015 2016-01-10  25.4  11.9   Jan    10
+#&gt; # ... with 356 more rows
+```
+
+---
+
+# Time series plot
+
+
+```r
+ggplot(otway_temp, aes(x = DATE)) +
+  geom_line(aes(y = TMAX), colour = "#1b9e77") +
+  geom_line(aes(y = TMIN), colour = "#7570b3") +
+  ylab("Daily maximum and minimum temperatures")
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Facetted by months
+
+
+```r
+ggplot(otway_temp) +
+  geom_rect(aes(xmin = DAY - 0.5, xmax = DAY + 0.5,  ymin = TMIN, ymax = TMAX),
+    colour = "white", fill = "grey30") +
+  facet_wrap(~ MONTH, ncol = 3) +
+  xlab("Day") + ylab("Daily temperature")
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-33-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
 # Map example -- whale sharks
+
+The whale shark data was pulled from [https://www.whaleshark.org](https://www.whaleshark.org) 
 
 
 ```r
@@ -534,11 +601,11 @@ ggmap(map) +
   geom_line(data=A524, aes(x=Longitude, y=Latitude), colour="red") 
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Histogram
+## Histogram: the distrubition of the number of sightings
 
 
 ```r
@@ -550,13 +617,13 @@ ningaloo_nomiss %&gt;%
   geom_histogram(binwidth=5)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
 
 
 
 ---
 
-# Facet by different individuals
+# Facetted by different individuals
 
 
 ```r
@@ -569,11 +636,11 @@ ggmap(map) +
   theme(legend.position="None")
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Facet by year collected
+# Facetted by years collected
 
 
 ```r
@@ -586,11 +653,11 @@ ggmap(map) +
   theme(legend.position="None")
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Facet by month collected
+# Facet by months collected
 
 
 ```r
@@ -603,7 +670,7 @@ ggmap(map) +
   theme(legend.position="None") 
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -622,11 +689,11 @@ p &lt;- ggplot(fly_sub, aes(
 )) + 
   geom_bar(position="fill") + 
   coord_flip() + 
-  facet_wrap(~Age, ncol=5)
+  facet_wrap(~Age, ncol=4)
 p
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-37-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-41-1.png" style="display: block; margin: auto;" /&gt;
 
 What do we learn?
 
@@ -638,7 +705,7 @@ What do we learn?
 p + scale_fill_brewer(palette="Dark2") 
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-42-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Color blind-proofing
@@ -655,7 +722,7 @@ p + scale_fill_manual("", values=clrs) + theme(legend.position = "none")
 
 ---
 
-![](index_files/figure-html/unnamed-chunk-40-1.png)![](index_files/figure-html/unnamed-chunk-40-2.png)
+![](index_files/figure-html/unnamed-chunk-44-1.png)![](index_files/figure-html/unnamed-chunk-44-2.png)
 
 ---
 # Perceptual principles
@@ -681,13 +748,13 @@ p + scale_fill_manual("", values=clrs) + theme(legend.position = "none")
 
 Can you find the odd one out?
 
-&lt;img src="index_files/figure-html/unnamed-chunk-41-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-45-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
 Is it easier now?
 
-&lt;img src="index_files/figure-html/unnamed-chunk-42-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-46-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -699,7 +766,7 @@ Is it easier now?
 
 ---
 
-&lt;img src="index_files/figure-html/unnamed-chunk-43-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-47-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -720,7 +787,7 @@ With this arrangement we can see proportion of gender within each rudeness categ
 ---
 
 
-&lt;img src="index_files/figure-html/unnamed-chunk-45-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-49-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -739,7 +806,7 @@ ggplot(fly_sub, aes(
 
 ---
 
-&lt;img src="index_files/figure-html/unnamed-chunk-47-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-51-1.png" style="display: block; margin: auto;" /&gt;
 
 What is different about the comparison now?
 
@@ -758,7 +825,7 @@ ggplot(fly_sub, aes(
 
 ---
 
-&lt;img src="index_files/figure-html/unnamed-chunk-49-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-53-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Themes
@@ -782,7 +849,7 @@ See the [vignette](https://cran.r-project.org/web/packages/xkcd/vignettes/xkcd-i
 
 ---
 
-&lt;img src="index_files/figure-html/unnamed-chunk-51-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-55-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: inverse middle 

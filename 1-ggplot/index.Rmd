@@ -177,7 +177,7 @@ In terms of categorisation into either pdd or autism the vsae score is not disti
 
 ---
 
-# More example -- Soil composition data and yield
+# More example -- Soil composition data and corn yield
 
 ```{r}
 baker <- read_csv("../data/baker.csv")
@@ -186,7 +186,7 @@ baker
 
 ---
 
-# Tile plot: corn yield in the field 
+# Plotting tiles: corn yield in the field 
 
 ```{r}
 ggplot(baker, aes(x = X, y = Y, fill = Corn97BU)) +
@@ -197,7 +197,17 @@ ggplot(baker, aes(x = X, y = Y, fill = Corn97BU)) +
 
 ---
 
-# Association between Fe and Corn Yield by Cu
+## Plotting points between B and Corn Yield
+
+```{r}
+ggplot(baker, aes(x = B, y = Corn97BU)) +
+  geom_point() +
+  theme(aspect.ratio = 1)
+```
+
+---
+
+## Plotting points between Fe and Corn Yield by Cu
 
 ```{r}
 ggplot(baker, aes(x = Fe, y = Corn97BU, colour = Cu)) +
@@ -256,7 +266,7 @@ ggplot(fly, aes(x=`How often do you travel by plane?`)) +
   geom_bar() + coord_flip()
 ```
 
-**Any issue about the plot itself?**
+**Any room in improving the plot?**
 
 --
 
@@ -441,7 +451,62 @@ What's the difference between `facet_wrap()` and `facet_grid()`?
 
 ---
 
+# Temporal example -- daily temperatures
+
+```{r, echo = FALSE}
+otway_weather <- read_csv("../data/weather_2016.csv")
+otway_tidy <- otway_weather %>% 
+  gather(DAY, VALUE, VALUE1:VALUE31) %>% 
+  mutate(
+    DAY = str_sub(DAY, start = 6),
+    DATE = ymd(paste(YEAR, MONTH, DAY, sep = "-"))
+  ) %>% 
+  arrange(DATE) %>% 
+  select(ID, DATE, ELEMENT, VALUE) %>% 
+  filter(!(is.na(DATE))) %>% 
+  mutate(
+    VALUE = if_else(VALUE < -999, NA_integer_, VALUE),
+    VALUE = VALUE / 10
+  ) %>% 
+  spread(ELEMENT, VALUE)
+otway_temp <- otway_tidy %>% 
+  mutate(
+    MONTH = month(DATE, label = TRUE),
+    DAY = mday(DATE)
+  ) %>% 
+  select(ID, DATE, TMAX, TMIN, MONTH, DAY)
+otway_temp
+```
+
+---
+
+# Time series plot
+
+```{r}
+ggplot(otway_temp, aes(x = DATE)) +
+  geom_line(aes(y = TMAX), colour = "#1b9e77") +
+  geom_line(aes(y = TMIN), colour = "#7570b3") +
+  ylab("Daily maximum and minimum temperatures")
+```
+
+---
+
+# Facetted by months
+
+```{r, fig.height=5}
+ggplot(otway_temp) +
+  geom_rect(aes(xmin = DAY - 0.5, xmax = DAY + 0.5,  ymin = TMIN, ymax = TMAX),
+    colour = "white", fill = "grey30") +
+  facet_wrap(~ MONTH, ncol = 3) +
+  xlab("Day") + ylab("Daily temperature")
+```
+
+
+---
+
 # Map example -- whale sharks
+
+The whale shark data was pulled from [https://www.whaleshark.org](https://www.whaleshark.org) 
 
 ```{r}
 whalesharks <- read_csv("../data/whaleshark-encounters.csv")
@@ -469,7 +534,7 @@ ggmap(map) +
 
 ---
 
-# Histogram
+## Histogram: the distrubition of the number of sightings
 
 ```{r} 
 ningaloo_nomiss <- ningaloo %>%
@@ -491,7 +556,7 @@ arrange(date)
 
 ---
 
-# Facet by different individuals
+# Facetted by different individuals
 
 ```{r}
 ggmap(map) + 
@@ -505,7 +570,7 @@ ggmap(map) +
 
 ---
 
-# Facet by year collected
+# Facetted by years collected
 
 ```{r}
 ggmap(map) + 
@@ -519,7 +584,7 @@ ggmap(map) +
 
 ---
 
-# Facet by month collected
+# Facet by months collected
 
 ```{r}
 ggmap(map) + 
@@ -547,7 +612,7 @@ p <- ggplot(fly_sub, aes(
 )) + 
   geom_bar(position="fill") + 
   coord_flip() + 
-  facet_wrap(~Age, ncol=5)
+  facet_wrap(~Age, ncol=4)
 p
 ```
 
