@@ -17,6 +17,8 @@
 # RStudio files
 .Rproj.user/
 Biometric2017.Rproj
+.DS_Store
+**/index_cache/
 
 # produced vignettes
 vignettes/*.html

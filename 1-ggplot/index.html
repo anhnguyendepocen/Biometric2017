@@ -123,7 +123,7 @@ How is the data mapped to graphical elements?
 
 
 ---
-# Adding density
+# Adding density layer
 
 
 ```r
@@ -168,6 +168,88 @@ class: inverse middle
 ![](lorikeets.png)
 
 What do we learn about the composition of fatty acids found in the lipid fraction of Italian olive oils?
+
+
+
+---
+
+# More example -- Soil composition data and yield
+
+
+```r
+baker &lt;- read_csv("../data/baker.csv")
+baker
+#&gt; # A tibble: 215 x 13
+#&gt;        X     Y Corn97BU     B    Ca    Cu    Fe     K    Mg    Mn    Na
+#&gt;    &lt;int&gt; &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+#&gt;  1     0     0   174.73  2.74  2608  1.44   192    88   442    62    14
+#&gt;  2    12     0   147.43  4.23  3167  1.73   180    81   522    66    16
+#&gt;  3    24     0   155.39  2.78  2359  1.27   249   110   413    85    15
+#&gt;  4    36     0   141.46  1.92  1766  0.76   189   117   314    63    15
+#&gt;  5    48     0   148.54  3.95  1647  0.48   188    99   304    73    15
+#&gt;  6    60     0   135.30  1.99  1505  0.44   147    72   263    58    13
+#&gt;  7    72     0   145.80  1.87  1755  0.52   125   111   302    47    13
+#&gt;  8    96     0   150.83  2.00  1902  0.86   188   112   325    76    15
+#&gt;  9   108     0   146.21  1.89  1970  0.96   236   105   327    93    12
+#&gt; 10   120     0   167.43  1.73  2069  0.92   209   108   343    85    13
+#&gt; # ... with 205 more rows, and 2 more variables: P &lt;int&gt;, Zn &lt;dbl&gt;
+```
+
+---
+
+# Tile plot: corn yield in the field 
+
+
+```r
+ggplot(baker, aes(x = X, y = Y, fill = Corn97BU)) +
+  geom_tile() +
+  theme_bw() +
+  theme(aspect.ratio = 1)
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Association between Fe and Corn Yield by Cu
+
+
+```r
+ggplot(baker, aes(x = Fe, y = Corn97BU, colour = Cu)) +
+  geom_point() +
+  theme(aspect.ratio = 1)
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Split Cu by high and low
+
+
+```r
+baker_cat &lt;- baker %&gt;% 
+  mutate(Cu_cat = ifelse(Cu &gt; 2.5, "High", "Low"))
+ggplot(baker_cat, aes(x = Fe, y = Corn97BU, colour = Cu_cat)) +
+  geom_point() +
+  theme(aspect.ratio = 1)
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Adding regression line
+
+
+```r
+ggplot(baker_cat, aes(x = Fe, y = Corn97BU, colour = Cu_cat)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm") +
+  theme(aspect.ratio = 1)
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -228,7 +310,7 @@ ggplot(fly, aes(x=`How often do you travel by plane?`)) +
   geom_bar() + coord_flip()
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
 
 **Any issue about the plot itself?**
 
@@ -253,7 +335,7 @@ ggplot(fly, aes(x=`How often do you travel by plane?`)) +
   coord_flip()
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Sorted categories
@@ -269,7 +351,7 @@ ggplot(fly,
   scale_fill_brewer(palette="Dark2")
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Filter data
@@ -301,7 +383,7 @@ ggplot(fly_sub, aes(
   )) + geom_boxplot() + coord_flip()
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -382,7 +464,7 @@ ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`)) +
   facet_wrap(~Gender)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-28-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Facets
@@ -397,7 +479,7 @@ ggplot(fly_sub, aes(x=`In general, is itrude to bring a baby on a plane?`)) +
   facet_grid(Age~Gender)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -452,7 +534,7 @@ ggmap(map) +
   geom_line(data=A524, aes(x=Longitude, y=Latitude), colour="red") 
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -468,7 +550,7 @@ ningaloo_nomiss %&gt;%
   geom_histogram(binwidth=5)
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-27-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -483,11 +565,11 @@ ggmap(map) +
     aes(x=Longitude, y=Latitude, colour=`Marked Individual`)) + 
   geom_line(data=ningaloo_freqwhales, aes(x=Longitude, y=Latitude, 
     colour=`Marked Individual`, group=`Marked Individual`)) + 
-  facet_wrap(~`Marked Individual`, ncol=8) +
+  facet_wrap(~`Marked Individual`, ncol=7) +
   theme(legend.position="None")
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -500,11 +582,11 @@ ggmap(map) +
     colour=`Marked Individual`)) + 
   geom_line(data=ningaloo_freqwhales, aes(x=Longitude, y=Latitude, 
   colour=`Marked Individual`, group=`Marked Individual`)) + 
-  facet_wrap(~`Year Collected`, ncol=5) +
+  facet_wrap(~`Year Collected`, ncol=6) +
   theme(legend.position="None")
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -521,7 +603,8 @@ ggmap(map) +
   theme(legend.position="None") 
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
+
 
 ---
 
@@ -543,7 +626,7 @@ p &lt;- ggplot(fly_sub, aes(
 p
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-37-1.png" style="display: block; margin: auto;" /&gt;
 
 What do we learn?
 
@@ -555,7 +638,7 @@ What do we learn?
 p + scale_fill_brewer(palette="Dark2") 
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-33-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Color blind-proofing
@@ -572,7 +655,7 @@ p + scale_fill_manual("", values=clrs) + theme(legend.position = "none")
 
 ---
 
-![](index_files/figure-html/unnamed-chunk-35-1.png)![](index_files/figure-html/unnamed-chunk-35-2.png)
+![](index_files/figure-html/unnamed-chunk-40-1.png)![](index_files/figure-html/unnamed-chunk-40-2.png)
 
 ---
 # Perceptual principles
@@ -598,13 +681,13 @@ p + scale_fill_manual("", values=clrs) + theme(legend.position = "none")
 
 Can you find the odd one out?
 
-&lt;img src="index_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-41-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
 Is it easier now?
 
-&lt;img src="index_files/figure-html/unnamed-chunk-37-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-42-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -616,7 +699,7 @@ Is it easier now?
 
 ---
 
-&lt;img src="index_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-43-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -637,7 +720,7 @@ With this arrangement we can see proportion of gender within each rudeness categ
 ---
 
 
-&lt;img src="index_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-45-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -656,7 +739,7 @@ ggplot(fly_sub, aes(
 
 ---
 
-&lt;img src="index_files/figure-html/unnamed-chunk-42-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-47-1.png" style="display: block; margin: auto;" /&gt;
 
 What is different about the comparison now?
 
@@ -675,7 +758,7 @@ ggplot(fly_sub, aes(
 
 ---
 
-&lt;img src="index_files/figure-html/unnamed-chunk-44-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-49-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 # Themes
@@ -699,7 +782,7 @@ See the [vignette](https://cran.r-project.org/web/packages/xkcd/vignettes/xkcd-i
 
 ---
 
-&lt;img src="index_files/figure-html/unnamed-chunk-46-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-51-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 class: inverse middle 

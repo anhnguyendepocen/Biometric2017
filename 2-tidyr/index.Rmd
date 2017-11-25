@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
   fig.height = 4,
   fig.width = 8,
   fig.align = "center",
-  cache = FALSE
+  cache = TRUE
 )
 options(tibble.print_min = 5)
 ```
@@ -184,7 +184,7 @@ There are various features of messy data that one can observe in practice. Here 
 
 ---
 
-![](playmobile.png)
+![](playmobil.jpg)
 
 ---
 # Tidy Verbs

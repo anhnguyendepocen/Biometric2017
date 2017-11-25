@@ -210,7 +210,7 @@ There are various features of messy data that one can observe in practice. Here 
 
 ---
 
-![](playmobile.png)
+![](playmobil.jpg)
 
 ---
 # Tidy Verbs
@@ -623,38 +623,6 @@ ggplot(ff_lm_all, aes(x=.fitted, y=.resid)) + geom_point()
 ```
 
 &lt;img src="index_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
-
----
-# Back to autism
-
-Fit a random slopes model to the data:
-
-`$$vsae = \beta_0 + \beta_1 age2 +  b_1 childid + \varepsilon$$`
-
-
-```r
-library(lme4)
-data(autism)
-autism_keep &lt;- autism %&gt;% group_by(childid) %&gt;% 
-  tally(sort=TRUE) %&gt;% filter(n&gt;2)
-autism_sub &lt;- autism %&gt;% 
-  filter(childid %in% autism_keep$childid)
-autism_lmer &lt;- lmer(vsae ~ age2 + ( age2 - 1 | childid ), 
-                    data = autism_sub)
-```
-
----
-class: inverse middle 
-# Your turn
-
-- Augment the autism data with the model diagnostics
-- Plot the residuals from the (a) fixed, (b) random effects
-- Color the residuals by (a) gender, (b) besttest2
-- Plot fitted values against observed values
-
-![](lorikeets.png)
-
-
 
 ---
 # Resources
